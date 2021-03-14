@@ -152,6 +152,195 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-pandas-数据处理方法与问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/14/pandas-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95%E4%B8%8E%E9%97%AE%E9%A2%98/">pandas 数据处理方法与问题</a>
+    </h1>
+  
+
+        
+        <a href="/2021/03/14/pandas-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95%E4%B8%8E%E9%97%AE%E9%A2%98/" class="archive-article-date">
+  	<time datetime="2021-03-14T13:35:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> <strong>前言：</strong>近期参与了一个大数据挖掘项目，我在项目中负责部分数据预处理的工作。主要使用的工具为pandas，而在使用pandas进行大数据预处理工作的时候，遇到了较多问题需要回头总结。因此在这篇博客中，记录一些我使用的pandas等数据预处理方法和一些问题的解决方法，以供我今后回忆。#</p>
+<h3 id="1-Pandas-读取-处理-Big-Data-的局限性"><a href="#1-Pandas-读取-处理-Big-Data-的局限性" class="headerlink" title="1. Pandas 读取 处理 Big Data 的局限性"></a>1. Pandas 读取 处理 Big Data 的局限性</h3><blockquote>
+<p>There is a stark difference between large data and big data. With the hype around big data, it is easy for us to consider everything as “big data” and just go with the flow.<br>The word large and big are in themselves ‘relative’ and in my humble opinion, <em>large data is data sets that are less than 100GB</em>.<br>Pandas is very efficient with small data (<strong>usually from 100MB up to 1GB</strong>) and performance is rarely a concern.</p>
+<p>——Why and How to Use Pandas with Large Data，But Not Big Data… ——Admond Lee</p>
+</blockquote>
+<p>因此，对于使用pandas读取大文件数据（在这里是指csv）可以使用 Chunk size的方式，其步骤如下。</p>
+<blockquote>
+<ol>
+<li>read in a chunk</li>
+<li>process the chunk</li>
+<li>save the results of the chunk</li>
+<li>repeat steps 1 to 3 until we have all chunk results</li>
+<li>combine the chunk result</li>
+</ol>
+</blockquote>
+<p>样例代码如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chunk_preprocessing</span>(<span class="params">chunk</span>):</span></span><br><span class="line">    <span class="keyword">return</span> chunk</span><br><span class="line"></span><br><span class="line"><span class="comment"># read the large csv file with specified chunksize. set header name as NONE</span></span><br><span class="line">dataChunk = pd.read_csv(data_filepath, chunksize=<span class="number">10000</span>, header=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">chunkList = [] <span class="comment"># append each chunk df here</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># each chunk is in df format</span></span><br><span class="line"><span class="keyword">for</span> chunk <span class="keyword">in</span> dataChunk:</span><br><span class="line">    <span class="comment"># perform data filtering</span></span><br><span class="line">    chunkFilter = chunk_preprocessing(chunk)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># once the data filtering is over, append the chunk to list</span></span><br><span class="line">    chunkList.append(chunkFilter)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># concat the list into df format</span></span><br><span class="line">dataConcat = pd.concat(chunkList)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-pandas-中读取-csv-格式文件的一些参数设置"><a href="#2-pandas-中读取-csv-格式文件的一些参数设置" class="headerlink" title="2. pandas 中读取 csv 格式文件的一些参数设置"></a>2. pandas 中读取 csv 格式文件的一些参数设置</h3><p>这是一篇很好的详细讲述<code>to_csv()</code>方法的文章。<a target="_blank" rel="noopener" href="https://www.cnblogs.com/traditional/p/12514914.html">https://www.cnblogs.com/traditional/p/12514914.html</a></p>
+<p>一些我常使用的参数：</p>
+<ol>
+<li><p><code>nrows</code>：设置一次读入的行数，当只想知道大文件的格式时，可以使用该参数观察。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.read_csv(<span class="string">&#x27;data.csv&#x27;</span>, nrows=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>dtype</code>：指定某一列的格式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.read_csv(<span class="string">&#x27;data.csv&#x27;</span>,dtype=&#123;<span class="string">&quot;id&quot;</span>: str&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>usecols</code>：指定使用的列。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.read_csv(<span class="string">&#x27;data.csv&#x27;</span>, usecols=[<span class="string">&quot;name&quot;</span>, <span class="string">&quot;address&quot;</span>])</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="3-更改列的数据类型"><a href="#3-更改列的数据类型" class="headerlink" title="3. 更改列的数据类型"></a>3. 更改列的数据类型</h3><p>使用<code>astype()</code>来更改<code>datafram</code>数据结构的类型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[[<span class="string">&#x27;DATE&#x27;</span>,<span class="string">&#x27;TIME&#x27;</span>]] = df[[<span class="string">&#x27;DATE&#x27;</span>,<span class="string">&#x27;TIME&#x27;</span>]].astype(<span class="string">&#x27;int32&#x27;</span>, copy=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p> 使用<code>copy=False</code>来提高处理性能。</p>
+<h3 id="4-判断列的数据类型"><a href="#4-判断列的数据类型" class="headerlink" title="4. 判断列的数据类型"></a>4. 判断列的数据类型</h3><p>使用<code>dtype</code>来得到<code>datafram</code>中某一列的数据类型，进而与numpy中的数据类型进行判断</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;time&#x27;</span>].dtype == np.int64</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-dataframe去空和去重"><a href="#5-dataframe去空和去重" class="headerlink" title="5. dataframe去空和去重"></a>5. <code>dataframe</code>去空和去重</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.dropna(how=<span class="string">&#x27;any&#x27;</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">df.drop_duplicates(keep = <span class="string">&#x27;first&#x27;</span>, inplace = <span class="literal">True</span>) </span><br></pre></td></tr></table></figure>
+
+<h3 id="6-dataframe-数据过滤"><a href="#6-dataframe-数据过滤" class="headerlink" title="6. dataframe 数据过滤"></a>6. <code>dataframe</code> 数据过滤</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_in = df_og[df_og.CODE == <span class="number">21</span>]</span><br><span class="line">df_no_tf = df_od[df_od.transfer.isnull()]</span><br><span class="line">df_has_tf = df_od[df_od.transfer.notnull()]</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-dataframe列的重命名"><a href="#7-dataframe列的重命名" class="headerlink" title="7. dataframe列的重命名"></a>7. <code>dataframe</code>列的重命名</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.rename(columns=&#123;<span class="string">&#x27;DATE&#x27;</span>:<span class="string">&#x27;date&#x27;</span>,<span class="string">&#x27;TIME&#x27;</span>:<span class="string">&#x27;time&#x27;</span>,<span class="string">&#x27;CODE&#x27;</span>:<span class="string">&#x27;ID&#x27;</span>&#125;, inplace = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-dataframe去除列"><a href="#8-dataframe去除列" class="headerlink" title="8. dataframe去除列"></a>8. <code>dataframe</code>去除列</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.drop([<span class="string">&#x27;CODE&#x27;</span>], axis=<span class="number">1</span>, inplace = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-两个dataframe的合并（merge）"><a href="#9-两个dataframe的合并（merge）" class="headerlink" title="9.  两个dataframe的合并（merge）"></a>9.  两个<code>dataframe</code>的合并（merge）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_od = df_out.merge(df_in, on=[<span class="string">&#x27;ID&#x27;</span>,<span class="string">&#x27;date&#x27;</span>], how=<span class="string">&#x27;left&#x27;</span>, copy=<span class="literal">False</span>) <span class="comment">#左外连</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>在进行<code>merge</code>前需要保证列表中的没有重复值，否则<code>merge</code>后数据会极度膨胀。</p>
+<p>参考链接：（我不可能写得比这还好了）</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xk-bench/p/8379180.html">https://www.cnblogs.com/xk-bench/p/8379180.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/102274476">https://zhuanlan.zhihu.com/p/102274476</a></p>
+</blockquote>
+<h3 id="10-dataframe和series的apply方法"><a href="#10-dataframe和series的apply方法" class="headerlink" title="10. dataframe和series的apply方法"></a>10. <code>dataframe</code>和<code>series</code>的<code>apply</code>方法</h3><p>参考链接：（我不可能写得比这还好了）</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/100064394">https://zhuanlan.zhihu.com/p/100064394</a></p>
+</blockquote>
+<h3 id="11-dataframe的groupby方法"><a href="#11-dataframe的groupby方法" class="headerlink" title="11. dataframe的groupby方法"></a>11. <code>dataframe</code>的<code>groupby</code>方法</h3><p>参考链接：（我不可能写得比这还好了）</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/101284491">https://zhuanlan.zhihu.com/p/101284491</a></p>
+</blockquote>
+<h3 id="12-对series按-39-39-或-39-39-分割"><a href="#12-对series按-39-39-或-39-39-分割" class="headerlink" title="12. 对series按&#39; &#39;或&#39;,&#39;分割"></a>12. 对<code>series</code>按<code>&#39; &#39;</code>或<code>&#39;,&#39;</code>分割</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;lines&#x27;</span>] = df[<span class="string">&#x27;lines&#x27;</span>].str.split(<span class="string">&#x27; &#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="13-使用列表推导式而非for循环构建python列表"><a href="#13-使用列表推导式而非for循环构建python列表" class="headerlink" title="13. 使用列表推导式而非for循环构建python列表"></a>13. 使用列表推导式而非<code>for</code>循环构建python列表</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list_a = [i <span class="keyword">for</span> i <span class="keyword">in</span> ser.data] <span class="comment"># Good</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(list_b) - <span class="number">1</span>):</span><br><span class="line">    list_b.append(ser.data[i]) <span class="comment"># Bad</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="14-使用enumerate同时得到列表的index和value"><a href="#14-使用enumerate同时得到列表的index和value" class="headerlink" title="14. 使用enumerate同时得到列表的index和value"></a>14. 使用<code>enumerate</code>同时得到列表的<code>index</code>和<code>value</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> idx, val <span class="keyword">in</span> enumerate(range(a, b)):</span><br><span class="line">    res[val] = (idx + <span class="number">1</span>) * t</span><br></pre></td></tr></table></figure>
+
+<h3 id="15-对dataframe使用explode方法，进行列转行"><a href="#15-对dataframe使用explode方法，进行列转行" class="headerlink" title="15. 对dataframe使用explode方法，进行列转行"></a>15. 对<code>dataframe</code>使用<code>explode</code>方法，进行列转行</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df = df_od.explode(<span class="string">&#x27;time_arr&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果爆炸两列以上，可以使用自定义方法：</p>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">unnesting</span>(<span class="params">df, explode</span>):</span></span><br><span class="line">    idx = df.index.repeat(df[explode[<span class="number">0</span>]].str.len())</span><br><span class="line">    df1 = pd.concat([</span><br><span class="line">        pd.DataFrame(&#123;x: np.concatenate(df[x].values)&#125;) <span class="keyword">for</span> x <span class="keyword">in</span> explode], axis=<span class="number">1</span>)</span><br><span class="line">    df1.index = idx</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> df1.join(df.drop(explode, <span class="number">1</span>), how=<span class="string">&#x27;left&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_37773338/article/details/103754807">https://blog.csdn.net/m0_37773338/article/details/103754807</a></p>
+</blockquote>
+<h3 id="16-对dataframe使用iterrows方法，来遍历行"><a href="#16-对dataframe使用iterrows方法，来遍历行" class="headerlink" title="16. 对dataframe使用iterrows方法，来遍历行"></a>16. 对<code>dataframe</code>使用<code>iterrows</code>方法，来遍历行</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index, row <span class="keyword">in</span> df.iterrows():</span><br><span class="line">    print(index)</span><br><span class="line">    print(row)</span><br></pre></td></tr></table></figure>
+
+<h3 id="17-对series使用unique方法，来获取唯一值"><a href="#17-对series使用unique方法，来获取唯一值" class="headerlink" title="17. 对series使用unique方法，来获取唯一值"></a>17. 对<code>series</code>使用<code>unique</code>方法，来获取唯一值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">date_arr = df_one_month[<span class="string">&#x27;DATE&#x27;</span>].unique()</span><br></pre></td></tr></table></figure>
+
+<h3 id="18-使用time-time-方法来获取程序运行时间"><a href="#18-使用time-time-方法来获取程序运行时间" class="headerlink" title="18. 使用time.time()方法来获取程序运行时间"></a>18. 使用<code>time.time()</code>方法来获取程序运行时间</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">time0 = time.time()</span><br><span class="line">print(<span class="string">&#x27;time cost: &#123;0:.2f&#125;&#x27;</span>.format(time.time()-time0))</span><br></pre></td></tr></table></figure>
+
+<h3 id="19-将时间戳变更为给定格式的时间"><a href="#19-将时间戳变更为给定格式的时间" class="headerlink" title="19. 将时间戳变更为给定格式的时间"></a>19. 将时间戳变更为给定格式的时间</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int(time.strftime(<span class="string">&quot;%H%M%S&quot;</span>, time.localtime(x+<span class="number">57600</span>))) <span class="comment"># windows</span></span><br><span class="line">int(time.strftime(<span class="string">&quot;%H%M%S&quot;</span>, time.localtime(x))) <span class="comment"># linux</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="20-将给定格式的时间变更为时间戳"><a href="#20-将给定格式的时间变更为时间戳" class="headerlink" title="20. 将给定格式的时间变更为时间戳"></a>20. 将给定格式的时间变更为时间戳</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time.mktime(time.strptime(<span class="string">&#x27;1970-01-03 00:00:00&#x27;</span>, <span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="21-time-库"><a href="#21-time-库" class="headerlink" title="21. time 库"></a>21. <code>time</code> 库</h3><ul>
+<li><code>time.localtime([ sec ])</code><ul>
+<li>作用是格式化时间戳为本地的时间。 如果sec参数未输入，则以当前时间为转换标准。  </li>
+<li><code>sec</code> – 转换为<code>time.struct_time</code>类型的对象的秒数。</li>
+<li>无返回值</li>
+</ul>
+</li>
+<li><code>time.strftime(format[, t])</code>  <ul>
+<li>接收以时间元组，并返回以可读字符串表示的当地时间，格式由参数 <code>format</code> 决定。  </li>
+<li><code>format</code> – 格式字符串。<code>t</code> – 可选的参数t是一个<code>struct_time</code>对象。  </li>
+<li>返回以可读字符串表示的当地时间。</li>
+</ul>
+</li>
+<li><code>time.strptime(string[, format])</code><ul>
+<li>根据指定的格式把一个时间字符串解析为时间元组。</li>
+<li><code>string</code> – 时间字符串。<code>format</code> – 格式化字符串。</li>
+<li>返回<code>struct_time</code>对象。</li>
+</ul>
+</li>
+<li><code>time.mktime(t)</code><ul>
+<li>执行与<code>gmtime()</code> <code>，localtime()</code>相反的操作，它接收<code>struct_time</code>对象作为参数，返回用秒数来表示时间的浮点数。</li>
+<li><code>t</code> – 结构化的时间或者完整的9位元组元素。</li>
+<li>返回用秒数来表示时间的浮点数。</li>
+</ul>
+</li>
+</ul>
+<h3 id="22-pandarallel-库"><a href="#22-pandarallel-库" class="headerlink" title="22. pandarallel 库"></a>22. <code>pandarallel</code> 库</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 仅在linux环境下使用</span></span><br><span class="line"><span class="keyword">from</span> pandarallel <span class="keyword">import</span> pandarallel</span><br><span class="line"><span class="comment"># 初始化</span></span><br><span class="line">pandarallel.initialize()</span><br><span class="line"><span class="comment"># 将.apply()方法替换为.parallel_apply()方法</span></span><br><span class="line">ser = df.parallel_apply(func, axis=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># 尽量返回series而非dataframe，此处bug存疑</span></span><br></pre></td></tr></table></figure>
+
+<p>链接：<a target="_blank" rel="noopener" href="https://github.com/nalepae/pandarallel">https://github.com/nalepae/pandarallel</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">pandas, data preprocess</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/03/14/pandas-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95%E4%B8%8E%E9%97%AE%E9%A2%98/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-GNN-综述" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -396,7 +585,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2020 John Doe
+    		&copy; 2021 John Doe
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -477,6 +666,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">pandas, data preprocess</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
