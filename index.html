@@ -197,7 +197,7 @@
 <li>split input files into M pieces &amp; copy programs</li>
 <li>one of copy is the master, others are workers</li>
 <li>worker do map function &amp; buffer intermediate key/value in memory</li>
-<li>period write buffered pairs into local disk &amp;  buffered pairs 被分配给 R partition function</li>
+<li>period write buffered pairs into local disk &amp;  buffered pairs 被分配给 R partition function，注意在每个map tasks生成的intermediate key/value中都要根据key分配给几乎所有的reduce tasks。</li>
 <li>master 通知 reduce workers 目标位置，后者 remote calls buffered data 然后 sorts intermediate keys</li>
 <li>reduce worker 迭代地将每个key及其list(value)给reduce function，最后将结果append 在一起到 output file</li>
 <li>所有 map和reduce tasks 结束后，分会调用用户主程序，往往返回结果R个output files ，且不做合并。</li>
