@@ -6,11 +6,11 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Hexo</title>
+  <title>Tag: MapReduce, Cloud Computing | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/tags/MapReduce-Cloud-Computing/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="John Doe">
@@ -152,79 +152,34 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-经典论文：MapReduce" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
+  
     
-      <header class="article-header">
-        
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2021" class="archive-year">2021</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2021/03/16/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%EF%BC%9AMapReduce/" class="archive-article-date">
+  	<time datetime="2021-03-16T14:35:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-16</time>
+</a>
+        </div>
+    	 
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/16/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%EF%BC%9AMapReduce/">经典论文：MapReduce</a>
+      <a class="archive-article-title" href="/2021/03/16/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%EF%BC%9AMapReduce/">经典论文：MapReduce</a>
     </h1>
   
 
-        
-        <a href="/2021/03/16/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%EF%BC%9AMapReduce/" class="archive-article-date">
-  	<time datetime="2021-03-16T14:35:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>前言：这是《云计算》课程指定的论文阅读笔记。</p>
-<blockquote>
-<p>MapReduce</p>
-</blockquote>
-<p>[TOC]</p>
-<h3 id="0-摘要"><a href="#0-摘要" class="headerlink" title="0. 摘要"></a>0. 摘要</h3><p><strong>概念定义：</strong>MapReduce是一个 programming model，可以用来处理和生成大量数据集。</p>
-<p><strong>方法简介：</strong> specify 一个 map 函数处理键值生成一套中间键值对，再用 reduce 函数根据相同的中间键合并中间值。</p>
-<p><strong>方法特点：</strong>可以并行地在大规模集群上使用。run-time system会帮助处理执行中的细节。这会帮助没有经验的用户使用并行和大型分布式系统。</p>
-<p><strong>落地现状和贡献：</strong>有大量的集群正在使用MapReduce；帮助程序员简单地使用。</p>
-<h3 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h3><p>谷歌每天要处理大量概念直白，但计算上困难（数据量大，计算资源分配量多）的任务。需要解决任务中的并行化计算，分布存储数据，处理错误。</p>
-<p>Jeffrey Dean 等人的想法来自于Lisp的<em>map</em>和<em>reduce</em>以及其他的函数式语言。方法的简介。</p>
-<p>论文主要贡献。</p>
-<p>章节分配。</p>
-<h3 id="2-Programming-Model"><a href="#2-Programming-Model" class="headerlink" title="2. Programming Model"></a>2. Programming Model</h3><p>计算过程就是输入一组键值对，在产生一组键值对。由两个方程，<em>Map</em>和<em>Reduce</em>实现，两个方程均由用户书写完成。</p>
-<p><img src=".%5C%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%EF%BC%9AMapReduce%5CMapReduce%E5%87%BD%E6%95%B0%E7%9B%B8%E5%85%B3%E7%B1%BB%E5%9E%8B.png"></p>
-<h3 id="3-Implementation"><a href="#3-Implementation" class="headerlink" title="3. Implementation"></a>3. Implementation</h3><p><img src=".%5C%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%EF%BC%9AMapReduce%5C%E6%89%A7%E8%A1%8C%E6%A6%82%E8%A7%88.png"></p>
-<blockquote>
-<p>如上图所示，用户的MR程序，在运行时会fork出一个唯一的Master，以及众多用于执行map及reduce的worker进程，并分散到多台物理机上执行。其中，Master负责记录每个切分后的任务的状态(idle、in-process、completed)，Worker负责从master领取分配给自己的任务执行具体计算。</p>
-<p>每次运行的时候，会启动M个用于执行的Worker和R个用于执行Reduce的worker。map和reduce所需要的数据所在地的信息，都经由master中转。比如上游map产出的抓取地址、上游map任务的执行进度等，这些基本信息都在master有记录。<strong>所有的map、reduce的协调工作，由master负责</strong>。这种结构显著简化了系统的设计，避免了worker之间的各种通讯和协同问题。</p>
-<p>引用来源：<a target="_blank" rel="noopener" href="https://lvsizhe.github.io/course/2020/03/mapreduce.html">https://lvsizhe.github.io/course/2020/03/mapreduce.html</a></p>
-</blockquote>
-<ol>
-<li>split input files into M pieces &amp; copy programs</li>
-<li>one of copy is the master, others are workers</li>
-<li>worker do map function &amp; buffer intermediate key/value in memory</li>
-<li>period write buffered pairs into local disk &amp;  buffered pairs 被分配给 R partition function</li>
-<li>master 通知 reduce workers 目标位置，后者 remote calls buffered data 然后 sorts intermediate keys</li>
-<li>reduce worker 迭代地将每个key及其list(value)给reduce function，最后将结果append 在一起到 output file</li>
-<li>所有 map和reduce tasks 结束后，分会调用用户主程序，往往返回结果R个output files ，且不做合并。</li>
-</ol>
-<h3 id="4-Refinements"><a href="#4-Refinements" class="headerlink" title="4. Refinements"></a>4. Refinements</h3><p><strong>划分函数：</strong>使用hash函数均分任务。e.g. <code>hash(key) mod R</code></p>
-<p><strong>一个partition中的排序key：</strong>以方便输出文件的查询货后续的用户处理</p>
-<p><strong>可自定义的Combiner function：</strong>该方程在each machine上的map任务后执行，和 reduce function 功能类似。</p>
-<h3 id="8-Conclusions"><a href="#8-Conclusions" class="headerlink" title="8. Conclusions"></a>8. Conclusions</h3><p><strong>方法成功的原因：</strong></p>
-<ol>
-<li>模型方便使用。因为其隐藏了并行化、容错机制、局部优化和负载平衡的细节。</li>
-<li>模型可以很简单地表达很多问题。有很多应用举例。</li>
-<li>在集群上的可扩展性强。可以方便地利用大量地计算资源。</li>
-</ol>
-<p><strong>一般性的规律总结：</strong></p>
-<ol>
-<li>限制程序模型以使其更简单地并行，分布计算且能保证容错率。</li>
-<li>网络带宽是稀缺的资源，要尽量减少上下行数据量。</li>
-<li>冗余执行（ redundant execution ）可以用来减少低性能机器带来的影戏，并能处理机器宕机和数据损失。</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -236,557 +191,19 @@
 		</ul>
 	</div>
 
-      
+          
 
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/16/%E7%BB%8F%E5%85%B8%E8%AE%BA%E6%96%87%EF%BC%9AMapReduce/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
-    <article id="post-Genetic-Algorithm-材料阅读" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
+  
+    </div></section>
+  
+
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/16/Genetic-Algorithm-%E6%9D%90%E6%96%99%E9%98%85%E8%AF%BB/">Genetic Algorithm 材料阅读</a>
-    </h1>
-  
-
-        
-        <a href="/2021/03/16/Genetic-Algorithm-%E6%9D%90%E6%96%99%E9%98%85%E8%AF%BB/" class="archive-article-date">
-  	<time datetime="2021-03-16T02:11:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>前言：这是《计算智能》课程方法的两篇阅读材料。</p>
-<blockquote>
-<p>S. Karaman, T. Shima和E. Frazzoli, 《A Process Algebra Genetic Algorithm》, <em>IEEE Trans. Evol. Computat.</em>, 卷 16, 期 4, 页 489–503, 8月 2012, doi: <a target="_blank" rel="noopener" href="https://doi.org/10.1109/TEVC.2011.2160400">10.1109/TEVC.2011.2160400</a>.</p>
-<p>C. Pizzuti, 《A Multiobjective Genetic Algorithm to Find Communities in Complex Networks》, <em>IEEE Trans. Evol. Computat.</em>, 卷 16, 期 3, 页 418–430, 6月 2012, doi: <a target="_blank" rel="noopener" href="https://doi.org/10.1109/TEVC.2011.2161090">10.1109/TEVC.2011.2161090</a>.</p>
-</blockquote>
-<p>[TOC]</p>
-<h2 id="Ⅰ-A-Process-Algebra-Genetic-Algorithm"><a href="#Ⅰ-A-Process-Algebra-Genetic-Algorithm" class="headerlink" title="Ⅰ.  A Process Algebra Genetic Algorithm"></a>Ⅰ.  A Process Algebra Genetic Algorithm</h2><h3 id="1-什么是进程代数（-Process-Algebra-）"><a href="#1-什么是进程代数（-Process-Algebra-）" class="headerlink" title="1. 什么是进程代数（ Process Algebra ）"></a>1. 什么是进程代数（ Process Algebra ）</h3><blockquote>
-<p>进程代数英文为：process algebra，在英文中，这个词组中的process代表一个system(系统的)behavior（行为）；一个系统就是一个能表现出各种行为的事物，在计算机世界，process主要指一个软件系统的行为；这句话很抽象，说白了就是，一个软件系统可以表现为一个动作（action），比如转换一个文件的格式，也可以发生一个个事件（event），比如格式转换完毕，另外，一个软件系统也可以<strong>在一定的序列下</strong>完成一系列动作（action）；我们可以从各个角度（aspect）去观察一个系统的行为。研究者往往会关注一个角度的系统行为，这是他们会把系统进行抽象，称这种抽象为对系统行为的一种观察（observation）</p>
-<p>来自互联网资源：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/dengfanxin/archive/2009/06/08/pa.html">https://www.cnblogs.com/dengfanxin/archive/2009/06/08/pa.html</a></p>
-</blockquote>
-<h3 id="2-摘要"><a href="#2-摘要" class="headerlink" title="2. 摘要"></a>2. 摘要</h3><p><strong>提出的算法：</strong>使用process algebra来编码遗传算法中的遗传基因（解决方案）和遗传操作。</p>
-<p><strong>算法的应用：</strong>应用于 mission planning 和 optimization problems。</p>
-<p><strong>应用的示例：</strong>高等级的 mission planning of UAV 集群合作问题。</p>
-<p><strong>算法的详解：</strong>对于mission planning problem，solutions to the assignment problem，The evolutionary operators  在文章中使用的定义，方法和工作。</p>
-<p><strong>验证的方法：</strong>介绍本文算法的验证方法。使用模拟的方法验证，并在小中大的问题上得到了验证。</p>
-<h2 id="Ⅱ-A-Multiobjective-Genetic-Algorithm-to-Find-Communities-in-Complex-Networks"><a href="#Ⅱ-A-Multiobjective-Genetic-Algorithm-to-Find-Communities-in-Complex-Networks" class="headerlink" title="Ⅱ. A Multiobjective Genetic Algorithm to Find Communities in Complex Networks"></a>Ⅱ. A Multiobjective Genetic Algorithm to Find Communities in Complex Networks</h2><h3 id="1-摘要"><a href="#1-摘要" class="headerlink" title="1. 摘要"></a>1. 摘要</h3><p><strong>提出的算法：</strong>使用多目标遗传算法来解释复杂网络中的社区结构。</p>
-<p><strong>算法的应用：</strong>优化两个目标方程可以用于识别多个密集连接的节点组，而节点组内部是稀疏连接的。</p>
-<p><strong>算法的详解：</strong>生成一组由不同层次结构等级的网络。其中，解决方案（基因）在更深的层次。介绍moduel个数的决定方法。</p>
-<p><strong>验证的方法：</strong>在合成的和现实的网络上实验，都达到了SOTA的效果。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Genetic Algorithm, Process Algebra</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/16/Genetic-Algorithm-%E6%9D%90%E6%96%99%E9%98%85%E8%AF%BB/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-pandas-数据处理方法与问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/14/pandas-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95%E4%B8%8E%E9%97%AE%E9%A2%98/">pandas 数据处理方法与问题</a>
-    </h1>
-  
-
-        
-        <a href="/2021/03/14/pandas-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95%E4%B8%8E%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2021-03-14T13:35:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> <strong>前言：</strong>近期参与了一个大数据挖掘项目，我在项目中负责部分数据预处理的工作。主要使用的工具为pandas，而在使用pandas进行大数据预处理工作的时候，遇到了较多问题需要回头总结。因此在这篇博客中，记录一些我使用的pandas等数据预处理方法和一些问题的解决方法，以供我今后回忆。</p>
-<p>[TOC]</p>
-<h3 id="1-Pandas-读取-处理-Big-Data-的局限性"><a href="#1-Pandas-读取-处理-Big-Data-的局限性" class="headerlink" title="1. Pandas 读取 处理 Big Data 的局限性"></a>1. Pandas 读取 处理 Big Data 的局限性</h3><blockquote>
-<p>There is a stark difference between large data and big data. With the hype around big data, it is easy for us to consider everything as “big data” and just go with the flow.<br>The word large and big are in themselves ‘relative’ and in my humble opinion, <em>large data is data sets that are less than 100GB</em>.<br>Pandas is very efficient with small data (<strong>usually from 100MB up to 1GB</strong>) and performance is rarely a concern.</p>
-<p>——Why and How to Use Pandas with Large Data，But Not Big Data… ——Admond Lee</p>
-</blockquote>
-<p>因此，对于使用pandas读取大文件数据（在这里是指csv）可以使用 Chunk size的方式，其步骤如下。</p>
-<blockquote>
-<ol>
-<li>read in a chunk</li>
-<li>process the chunk</li>
-<li>save the results of the chunk</li>
-<li>repeat steps 1 to 3 until we have all chunk results</li>
-<li>combine the chunk result</li>
-</ol>
-</blockquote>
-<p>样例代码如下。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chunk_preprocessing</span>(<span class="params">chunk</span>):</span></span><br><span class="line">    <span class="keyword">return</span> chunk</span><br><span class="line"></span><br><span class="line"><span class="comment"># read the large csv file with specified chunksize. set header name as NONE</span></span><br><span class="line">dataChunk = pd.read_csv(data_filepath, chunksize=<span class="number">10000</span>, header=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">chunkList = [] <span class="comment"># append each chunk df here</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># each chunk is in df format</span></span><br><span class="line"><span class="keyword">for</span> chunk <span class="keyword">in</span> dataChunk:</span><br><span class="line">    <span class="comment"># perform data filtering</span></span><br><span class="line">    chunkFilter = chunk_preprocessing(chunk)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># once the data filtering is over, append the chunk to list</span></span><br><span class="line">    chunkList.append(chunkFilter)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># concat the list into df format</span></span><br><span class="line">dataConcat = pd.concat(chunkList)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-pandas-中读取-csv-格式文件的一些参数设置"><a href="#2-pandas-中读取-csv-格式文件的一些参数设置" class="headerlink" title="2. pandas 中读取 csv 格式文件的一些参数设置"></a>2. pandas 中读取 csv 格式文件的一些参数设置</h3><p>这是一篇很好的详细讲述<code>to_csv()</code>方法的文章。<a target="_blank" rel="noopener" href="https://www.cnblogs.com/traditional/p/12514914.html">https://www.cnblogs.com/traditional/p/12514914.html</a></p>
-<p>一些我常使用的参数：</p>
-<ol>
-<li><p><code>nrows</code>：设置一次读入的行数，当只想知道大文件的格式时，可以使用该参数观察。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.read_csv(<span class="string">&#x27;data.csv&#x27;</span>, nrows=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>dtype</code>：指定某一列的格式。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.read_csv(<span class="string">&#x27;data.csv&#x27;</span>,dtype=&#123;<span class="string">&quot;id&quot;</span>: str&#125;)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>usecols</code>：指定使用的列。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.read_csv(<span class="string">&#x27;data.csv&#x27;</span>, usecols=[<span class="string">&quot;name&quot;</span>, <span class="string">&quot;address&quot;</span>])</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h3 id="3-更改列的数据类型"><a href="#3-更改列的数据类型" class="headerlink" title="3. 更改列的数据类型"></a>3. 更改列的数据类型</h3><p>使用<code>astype()</code>来更改<code>datafram</code>数据结构的类型。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[[<span class="string">&#x27;DATE&#x27;</span>,<span class="string">&#x27;TIME&#x27;</span>]] = df[[<span class="string">&#x27;DATE&#x27;</span>,<span class="string">&#x27;TIME&#x27;</span>]].astype(<span class="string">&#x27;int32&#x27;</span>, copy=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-
-<p> 使用<code>copy=False</code>来提高处理性能。</p>
-<h3 id="4-判断列的数据类型"><a href="#4-判断列的数据类型" class="headerlink" title="4. 判断列的数据类型"></a>4. 判断列的数据类型</h3><p>使用<code>dtype</code>来得到<code>datafram</code>中某一列的数据类型，进而与numpy中的数据类型进行判断</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;time&#x27;</span>].dtype == np.int64</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-dataframe去空和去重"><a href="#5-dataframe去空和去重" class="headerlink" title="5. dataframe去空和去重"></a>5. <code>dataframe</code>去空和去重</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.dropna(how=<span class="string">&#x27;any&#x27;</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">df.drop_duplicates(keep = <span class="string">&#x27;first&#x27;</span>, inplace = <span class="literal">True</span>) </span><br></pre></td></tr></table></figure>
-
-<h3 id="6-dataframe-数据过滤"><a href="#6-dataframe-数据过滤" class="headerlink" title="6. dataframe 数据过滤"></a>6. <code>dataframe</code> 数据过滤</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_in = df_og[df_og.CODE == <span class="number">21</span>]</span><br><span class="line">df_no_tf = df_od[df_od.transfer.isnull()]</span><br><span class="line">df_has_tf = df_od[df_od.transfer.notnull()]</span><br></pre></td></tr></table></figure>
-
-<h3 id="7-dataframe列的重命名"><a href="#7-dataframe列的重命名" class="headerlink" title="7. dataframe列的重命名"></a>7. <code>dataframe</code>列的重命名</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.rename(columns=&#123;<span class="string">&#x27;DATE&#x27;</span>:<span class="string">&#x27;date&#x27;</span>,<span class="string">&#x27;TIME&#x27;</span>:<span class="string">&#x27;time&#x27;</span>,<span class="string">&#x27;CODE&#x27;</span>:<span class="string">&#x27;ID&#x27;</span>&#125;, inplace = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="8-dataframe去除列"><a href="#8-dataframe去除列" class="headerlink" title="8. dataframe去除列"></a>8. <code>dataframe</code>去除列</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.drop([<span class="string">&#x27;CODE&#x27;</span>], axis=<span class="number">1</span>, inplace = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="9-两个dataframe的合并（merge）"><a href="#9-两个dataframe的合并（merge）" class="headerlink" title="9.  两个dataframe的合并（merge）"></a>9.  两个<code>dataframe</code>的合并（merge）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_od = df_out.merge(df_in, on=[<span class="string">&#x27;ID&#x27;</span>,<span class="string">&#x27;date&#x27;</span>], how=<span class="string">&#x27;left&#x27;</span>, copy=<span class="literal">False</span>) <span class="comment">#左外连</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong>在进行<code>merge</code>前需要保证列表中的没有重复值，否则<code>merge</code>后数据会极度膨胀。</p>
-<p>参考链接：（我不可能写得比这还好了）</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xk-bench/p/8379180.html">https://www.cnblogs.com/xk-bench/p/8379180.html</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/102274476">https://zhuanlan.zhihu.com/p/102274476</a></p>
-</blockquote>
-<h3 id="10-dataframe和series的apply方法"><a href="#10-dataframe和series的apply方法" class="headerlink" title="10. dataframe和series的apply方法"></a>10. <code>dataframe</code>和<code>series</code>的<code>apply</code>方法</h3><p>参考链接：（我不可能写得比这还好了）</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/100064394">https://zhuanlan.zhihu.com/p/100064394</a></p>
-</blockquote>
-<h3 id="11-dataframe的groupby方法"><a href="#11-dataframe的groupby方法" class="headerlink" title="11. dataframe的groupby方法"></a>11. <code>dataframe</code>的<code>groupby</code>方法</h3><p>参考链接：（我不可能写得比这还好了）</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/101284491">https://zhuanlan.zhihu.com/p/101284491</a></p>
-</blockquote>
-<h3 id="12-对series按-39-39-或-39-39-分割"><a href="#12-对series按-39-39-或-39-39-分割" class="headerlink" title="12. 对series按&#39; &#39;或&#39;,&#39;分割"></a>12. 对<code>series</code>按<code>&#39; &#39;</code>或<code>&#39;,&#39;</code>分割</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;lines&#x27;</span>] = df[<span class="string">&#x27;lines&#x27;</span>].str.split(<span class="string">&#x27; &#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="13-使用列表推导式而非for循环构建python列表"><a href="#13-使用列表推导式而非for循环构建python列表" class="headerlink" title="13. 使用列表推导式而非for循环构建python列表"></a>13. 使用列表推导式而非<code>for</code>循环构建python列表</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list_a = [i <span class="keyword">for</span> i <span class="keyword">in</span> ser.data] <span class="comment"># Good</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(list_b) - <span class="number">1</span>):</span><br><span class="line">    list_b.append(ser.data[i]) <span class="comment"># Bad</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="14-使用enumerate同时得到列表的index和value"><a href="#14-使用enumerate同时得到列表的index和value" class="headerlink" title="14. 使用enumerate同时得到列表的index和value"></a>14. 使用<code>enumerate</code>同时得到列表的<code>index</code>和<code>value</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> idx, val <span class="keyword">in</span> enumerate(range(a, b)):</span><br><span class="line">    res[val] = (idx + <span class="number">1</span>) * t</span><br></pre></td></tr></table></figure>
-
-<h3 id="15-对dataframe使用explode方法，进行列转行"><a href="#15-对dataframe使用explode方法，进行列转行" class="headerlink" title="15. 对dataframe使用explode方法，进行列转行"></a>15. 对<code>dataframe</code>使用<code>explode</code>方法，进行列转行</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df = df_od.explode(<span class="string">&#x27;time_arr&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>如果爆炸两列以上，可以使用自定义方法：</p>
-<blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">unnesting</span>(<span class="params">df, explode</span>):</span></span><br><span class="line">    idx = df.index.repeat(df[explode[<span class="number">0</span>]].str.len())</span><br><span class="line">    df1 = pd.concat([</span><br><span class="line">        pd.DataFrame(&#123;x: np.concatenate(df[x].values)&#125;) <span class="keyword">for</span> x <span class="keyword">in</span> explode], axis=<span class="number">1</span>)</span><br><span class="line">    df1.index = idx</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> df1.join(df.drop(explode, <span class="number">1</span>), how=<span class="string">&#x27;left&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_37773338/article/details/103754807">https://blog.csdn.net/m0_37773338/article/details/103754807</a></p>
-</blockquote>
-<h3 id="16-对dataframe使用iterrows方法，来遍历行"><a href="#16-对dataframe使用iterrows方法，来遍历行" class="headerlink" title="16. 对dataframe使用iterrows方法，来遍历行"></a>16. 对<code>dataframe</code>使用<code>iterrows</code>方法，来遍历行</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index, row <span class="keyword">in</span> df.iterrows():</span><br><span class="line">    print(index)</span><br><span class="line">    print(row)</span><br></pre></td></tr></table></figure>
-
-<h3 id="17-对series使用unique方法，来获取唯一值"><a href="#17-对series使用unique方法，来获取唯一值" class="headerlink" title="17. 对series使用unique方法，来获取唯一值"></a>17. 对<code>series</code>使用<code>unique</code>方法，来获取唯一值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">date_arr = df_one_month[<span class="string">&#x27;DATE&#x27;</span>].unique()</span><br></pre></td></tr></table></figure>
-
-<h3 id="18-使用time-time-方法来获取程序运行时间"><a href="#18-使用time-time-方法来获取程序运行时间" class="headerlink" title="18. 使用time.time()方法来获取程序运行时间"></a>18. 使用<code>time.time()</code>方法来获取程序运行时间</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">time0 = time.time()</span><br><span class="line">print(<span class="string">&#x27;time cost: &#123;0:.2f&#125;&#x27;</span>.format(time.time()-time0))</span><br></pre></td></tr></table></figure>
-
-<h3 id="19-将时间戳变更为给定格式的时间"><a href="#19-将时间戳变更为给定格式的时间" class="headerlink" title="19. 将时间戳变更为给定格式的时间"></a>19. 将时间戳变更为给定格式的时间</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int(time.strftime(<span class="string">&quot;%H%M%S&quot;</span>, time.localtime(x+<span class="number">57600</span>))) <span class="comment"># windows</span></span><br><span class="line">int(time.strftime(<span class="string">&quot;%H%M%S&quot;</span>, time.localtime(x))) <span class="comment"># linux</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="20-将给定格式的时间变更为时间戳"><a href="#20-将给定格式的时间变更为时间戳" class="headerlink" title="20. 将给定格式的时间变更为时间戳"></a>20. 将给定格式的时间变更为时间戳</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time.mktime(time.strptime(<span class="string">&#x27;1970-01-03 00:00:00&#x27;</span>, <span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>))</span><br></pre></td></tr></table></figure>
-
-<h3 id="21-time-库"><a href="#21-time-库" class="headerlink" title="21. time 库"></a>21. <code>time</code> 库</h3><ul>
-<li><code>time.localtime([ sec ])</code><ul>
-<li>作用是格式化时间戳为本地的时间。 如果sec参数未输入，则以当前时间为转换标准。  </li>
-<li><code>sec</code> – 转换为<code>time.struct_time</code>类型的对象的秒数。</li>
-<li>无返回值</li>
-</ul>
-</li>
-<li><code>time.strftime(format[, t])</code>  <ul>
-<li>接收以时间元组，并返回以可读字符串表示的当地时间，格式由参数 <code>format</code> 决定。  </li>
-<li><code>format</code> – 格式字符串。<code>t</code> – 可选的参数t是一个<code>struct_time</code>对象。  </li>
-<li>返回以可读字符串表示的当地时间。</li>
-</ul>
-</li>
-<li><code>time.strptime(string[, format])</code><ul>
-<li>根据指定的格式把一个时间字符串解析为时间元组。</li>
-<li><code>string</code> – 时间字符串。<code>format</code> – 格式化字符串。</li>
-<li>返回<code>struct_time</code>对象。</li>
-</ul>
-</li>
-<li><code>time.mktime(t)</code><ul>
-<li>执行与<code>gmtime()</code> <code>，localtime()</code>相反的操作，它接收<code>struct_time</code>对象作为参数，返回用秒数来表示时间的浮点数。</li>
-<li><code>t</code> – 结构化的时间或者完整的9位元组元素。</li>
-<li>返回用秒数来表示时间的浮点数。</li>
-</ul>
-</li>
-</ul>
-<h3 id="22-pandarallel-库"><a href="#22-pandarallel-库" class="headerlink" title="22. pandarallel 库"></a>22. <code>pandarallel</code> 库</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 仅在linux环境下使用</span></span><br><span class="line"><span class="keyword">from</span> pandarallel <span class="keyword">import</span> pandarallel</span><br><span class="line"><span class="comment"># 初始化</span></span><br><span class="line">pandarallel.initialize()</span><br><span class="line"><span class="comment"># 将.apply()方法替换为.parallel_apply()方法</span></span><br><span class="line">ser = df.parallel_apply(func, axis=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># 尽量返回series而非dataframe，此处bug存疑</span></span><br></pre></td></tr></table></figure>
-
-<p>链接：<a target="_blank" rel="noopener" href="https://github.com/nalepae/pandarallel">https://github.com/nalepae/pandarallel</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">pandas, data preprocess</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/14/pandas-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95%E4%B8%8E%E9%97%AE%E9%A2%98/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-GNN-综述" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/11/GNN-%E7%BB%BC%E8%BF%B0/">GNN 综述</a>
-    </h1>
-  
-
-        
-        <a href="/2020/08/11/GNN-%E7%BB%BC%E8%BF%B0/" class="archive-article-date">
-  	<time datetime="2020-08-11T12:14:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>说明：这是总结、整合GNN相关综述文献的笔记。</p>
-<h2 id="1-GNN-介绍"><a href="#1-GNN-介绍" class="headerlink" title="1 GNN 介绍"></a>1 GNN 介绍</h2><p>图是一种由结点（nodes）和边（edges）构成的数据结构。由于图可以很好地表示社交网络、蛋白质结构、知识图谱等许多领域的研究。图分析关注的问题包括结点分类、边预测和回归。</p>
-<h3 id="1-1-Motivation"><a href="#1-1-Motivation" class="headerlink" title="1.1 Motivation"></a>1.1 Motivation</h3><p>图神经网络（GNNs）首先发展于<strong>卷积神经网络（CNN）</strong>。CNNs 可以提取多尺度的局部空间特征，并将其组合以构造具有高度表达力的表现形式。CNNs 采用的关键技术包括<code>局部链接</code>、<code>权值共享</code>、<code>多层网络的使用</code>。这也是解决图领域问题的关键技术：</p>
-<ol>
-<li>图结构是最典型的局部连接的结构。</li>
-<li>权值共享相比传统的基于谱的图理论减少了计算开销。</li>
-<li>多层结构是解决分层结构的关键技术。</li>
-</ol>
-<p>然而 CNNs 只能操作常规的欧几里得数据结构，例如，2D网格或1D序列。具体来说，CNNs 在图中难以定义局部卷积过滤器和池化操作，如<code>Fig.1</code>所示。因此，我们需要将 CNNs 推广到图上，实现对非欧式数据的操作。</p>
-<p><img src="fig1-grid-vs-graph.png" alt="Fig.1"></p>
-<p>图神经网络的另一个发展动机来自于<strong>图嵌入</strong>。图嵌入是指将图的结点、边或子使用低维向量表示。因此在表示学习思想的指导下，一些方法诸如<code>node2vec</code>, <code>LINE</code>, <code>TADW</code> 有了较大的突破。然而这些图嵌入的方法也存在两个严重的问题：</p>
-<ol>
-<li>在编码过程中，没有参数共享。这导致了参数随结点数线性增长，计算性能效率低下。</li>
-<li>直接嵌入的方法缺少泛化的能力。这意味着该方法不能处理动态图以及泛化到新的图。</li>
-</ol>
-<p>GNNs 的目的是从图结构中聚集信息。因此，GNNs 需要可以输入并（或）输出由元素及其依赖。更进一步，可以同时使用RNN核对图上的扩散过程进行建模。</p>
-<p>相较于传统的神经网络，GNNs 有以下三个优点。首先，一个标准的 CNNs 或 RNNs 只能以特定的顺序处理结点的特征。然而， GNNs可以分别传播每个结点并且忽视输入结点的顺序。其次，GNNs 可以在图的结构的指导下进行传播训练而不将结构当作特征的一部分。最后，GNNs 可以从非结构数据（现场图片和故事文本）中生成图。</p>
-<h3 id="1-2-分类"><a href="#1-2-分类" class="headerlink" title="1.2 分类"></a>1.2 分类</h3><p>在文献[2]中，将 GNNs 分为五种。</p>
-<ol>
-<li>Graph Convolutional Networks；</li>
-<li>Graph Attention Networks；</li>
-<li>Graph Auto-encoders；</li>
-<li>Graph Generative Networks；</li>
-<li>Graph Spatial-temporal Networks。 </li>
-</ol>
-<p>在文献[1]中，存在不同的划分方法。</p>
-<ol>
-<li>Graph Convolutional Networks &amp; Graph Attention Networks 为一类；</li>
-<li>Graph Spatial-temporal Networks；</li>
-<li>Graph Auto-encoders；</li>
-<li>Graph Generative Networks</li>
-</ol>
-<h2 id="2-MODELS"><a href="#2-MODELS" class="headerlink" title="2 MODELS"></a>2 MODELS</h2><p><em>待续</em></p>
-<h2 id="REFERENCES"><a href="#REFERENCES" class="headerlink" title="REFERENCES"></a>REFERENCES</h2><p>[1] Zhou J, Cui G, Zhang Z, et al. Graph neural networks: A review of methods and applications[J]. arXiv preprint arXiv:1812.08434, 2018.<br>[2] Z. Wu, S. Pan, F. Chen, G. Long, C. Zhang, and P. S. Yu, “A comprehensive survey on graph neural networks,” arXiv preprint arXiv:1901.00596, 2019.</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/08/11/GNN-%E7%BB%BC%E8%BF%B0/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-我的第一篇博客" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/10/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">我的第一篇博客</a>
-    </h1>
-  
-
-        
-        <a href="/2020/08/10/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="archive-article-date">
-  	<time datetime="2020-08-10T15:50:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>我的博客主要是为记录论文阅读而建立的。也会提交以往自己写的文章。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/08/10/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/10/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2020/08/10/hello-world/" class="archive-article-date">
-  	<time datetime="2020-08-10T15:38:26.867Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/08/10/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-  
 
 
           </div>
@@ -808,10 +225,10 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
+		isHome: false,
 		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

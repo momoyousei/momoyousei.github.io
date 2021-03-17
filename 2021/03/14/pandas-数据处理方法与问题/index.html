@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>pandas 数据处理方法与问题 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言：近期参与了一个大数据挖掘项目，我在项目中负责部分数据预处理的工作。主要使用的工具为pandas，而在使用pandas进行大数据预处理工作的时候，遇到了较多问题需要回头总结。因此在这篇博客中，记录一些我使用的pandas等数据预处理方法和一些问题的解决方法，以供我今后回忆。# 1. Pandas 读取 处理 Big Data 的局限性 There is a stark difference">
+  <meta name="description" content="前言：近期参与了一个大数据挖掘项目，我在项目中负责部分数据预处理的工作。主要使用的工具为pandas，而在使用pandas进行大数据预处理工作的时候，遇到了较多问题需要回头总结。因此在这篇博客中，记录一些我使用的pandas等数据预处理方法和一些问题的解决方法，以供我今后回忆。 [TOC] 1. Pandas 读取 处理 Big Data 的局限性 There is a stark differ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pandas 数据处理方法与问题">
 <meta property="og:url" content="http://yoursite.com/2021/03/14/pandas-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95%E4%B8%8E%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="前言：近期参与了一个大数据挖掘项目，我在项目中负责部分数据预处理的工作。主要使用的工具为pandas，而在使用pandas进行大数据预处理工作的时候，遇到了较多问题需要回头总结。因此在这篇博客中，记录一些我使用的pandas等数据预处理方法和一些问题的解决方法，以供我今后回忆。# 1. Pandas 读取 处理 Big Data 的局限性 There is a stark difference">
+<meta property="og:description" content="前言：近期参与了一个大数据挖掘项目，我在项目中负责部分数据预处理的工作。主要使用的工具为pandas，而在使用pandas进行大数据预处理工作的时候，遇到了较多问题需要回头总结。因此在这篇博客中，记录一些我使用的pandas等数据预处理方法和一些问题的解决方法，以供我今后回忆。 [TOC] 1. Pandas 读取 处理 Big Data 的局限性 There is a stark differ">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-14T13:35:34.000Z">
-<meta property="article:modified_time" content="2021-03-14T15:18:56.550Z">
+<meta property="article:modified_time" content="2021-03-16T02:18:19.315Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="pandas, data preprocess">
 <meta name="twitter:card" content="summary">
@@ -175,7 +175,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p> <strong>前言：</strong>近期参与了一个大数据挖掘项目，我在项目中负责部分数据预处理的工作。主要使用的工具为pandas，而在使用pandas进行大数据预处理工作的时候，遇到了较多问题需要回头总结。因此在这篇博客中，记录一些我使用的pandas等数据预处理方法和一些问题的解决方法，以供我今后回忆。#</p>
+        <p> <strong>前言：</strong>近期参与了一个大数据挖掘项目，我在项目中负责部分数据预处理的工作。主要使用的工具为pandas，而在使用pandas进行大数据预处理工作的时候，遇到了较多问题需要回头总结。因此在这篇博客中，记录一些我使用的pandas等数据预处理方法和一些问题的解决方法，以供我今后回忆。</p>
+<p>[TOC]</p>
 <h3 id="1-Pandas-读取-处理-Big-Data-的局限性"><a href="#1-Pandas-读取-处理-Big-Data-的局限性" class="headerlink" title="1. Pandas 读取 处理 Big Data 的局限性"></a>1. Pandas 读取 处理 Big Data 的局限性</h3><blockquote>
 <p>There is a stark difference between large data and big data. With the hype around big data, it is easy for us to consider everything as “big data” and just go with the flow.<br>The word large and big are in themselves ‘relative’ and in my humble opinion, <em>large data is data sets that are less than 100GB</em>.<br>Pandas is very efficient with small data (<strong>usually from 100MB up to 1GB</strong>) and performance is rarely a concern.</p>
 <p>——Why and How to Use Pandas with Large Data，But Not Big Data… ——Admond Lee</p>
@@ -395,6 +396,15 @@
   
 <nav id="article-nav">
   
+    <a href="/2021/03/16/Genetic-Algorithm-%E6%9D%90%E6%96%99%E9%98%85%E8%AF%BB/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Genetic Algorithm 材料阅读
+        
+      </div>
+    </a>
+  
   
     <a href="/2020/08/11/GNN-%E7%BB%BC%E8%BF%B0/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">GNN 综述</div>
@@ -524,6 +534,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">pandas, data preprocess</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Genetic Algorithm, Process Algebra</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">MapReduce, Cloud Computing</a>
               </li>
             
             <div class="clearfix"></div>
